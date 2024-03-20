@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+//import 'video_widget.dart';
+import 'udp_video_client.dart';
+import 'dart:typed_data';
 
 class RemoteControlScreen extends StatefulWidget {
   @override
@@ -7,11 +10,30 @@ class RemoteControlScreen extends StatefulWidget {
 
 class _RemoteControlScreenState extends State<RemoteControlScreen> {
   double _speed = 0.0;
+  UdpVideoClient? _videoClient; //Declaring the video client
 
   void _setSpeed(double value) {
     setState(() {
       _speed = value;
     });
+  }
+
+  @override
+  void initstate(){
+    super.initState();
+    _initializeVideoClient();
+
+  }
+
+  Future<void> _initializeVideoClient() async {
+    _videoClient = UdpVideoClient('raspberry_pi_ip', 12345);
+    await _videoClient!.start(); //To start receiving the video data
+  }
+
+  @override
+  void dispose(){
+    _videoClient?.stop(); //Stop receving the video data when screen is disposed
+    super.dispose();
   }
 
   void _moveForward() {
@@ -32,59 +54,116 @@ class _RemoteControlScreenState extends State<RemoteControlScreen> {
       appBar: AppBar(
         title: Text('Control Device'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Image or Logo
-            Container(
-              margin: EdgeInsets.only(bottom: 20.0),
-              child: Image.asset(
-                'assets/boat2.png', // Replace 'assets/logo.png' with your image path
-                width: 150.0,
-                height: 150.0,
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildVideoWidget(),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.arrow_upward),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(30),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.arrow_back),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(30),
+                        ),
+                      ),
+                      SizedBox(width: 100), // Adjust spacing between buttons
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.stop),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(30),
+                        ),
+                      ),
+                      SizedBox(width: 100), // Adjust spacing between buttons
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.arrow_forward),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(30),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Icon(Icons.arrow_downward),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(30),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            // Speed Slider
-            Slider(
-              value: _speed,
-              min: 0,
-              max: 2,
-              divisions: 3,
-              label: _speed.toString(),
-              onChanged: _setSpeed,
+          ),
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.all(16),
+            child: ElevatedButton(
+              onPressed: () {
+                // Navigate to the PickupDumpPage when the button is pressed
+                Navigator.pushNamed(context, '/pick_and_dump');
+              },
+              child: Text('Next'),
             ),
-            // Forward Button
-            ElevatedButton(
-              onPressed: _moveForward,
-              child: Text('Forward'),
-              style: ButtonStyle(
-    backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-  ),
-            ),
-            // Left and Right Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _turnLeft,
-                  child: Text('Left'),
-                  style: ButtonStyle(
-    backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-  ),
-                ),
-                ElevatedButton(
-                  onPressed: _turnRight,
-                  child: Text('Right'),
-                 style: ButtonStyle(
-    backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
+
+ Widget _buildVideoWidget(){
+  return Container(
+    width: 320,
+    height: 240,
+    color: Colors.grey[300],
+
+  child: StreamBuilder<List<int>>(
+    stream: _videoClient?.videoStream, //Stream of video data from UDP
+    builder: (context, snapshot){
+      if(snapshot.hasData){
+        //Display video data if available
+        Uint8List imageData = Uint8List.fromList(snapshot.data!);
+        return Image.memory(imageData);
+        }
+        else{
+          //Placeholder widget when no video data is available
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+    },
+  ),
+  );
+ }
+ 
+
 }
