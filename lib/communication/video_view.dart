@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 
 class VideoView extends StatefulWidget {
   const VideoView({super.key});
@@ -8,10 +9,32 @@ class VideoView extends StatefulWidget {
 }
 
 class _VideoViewState extends State<VideoView> {
-  // stream videos from ip camera
+  VlcPlayerController? _videoPlayerController;
+  final String url = 'rtsp://';
+  @override
+  void initState() {
+    super.initState();
+    _videoPlayerController = VlcPlayerController.network(
+      url,
+      autoInitialize: true,
+      hwAcc: HwAcc.full, // Hardware acceleration for better performance
+      autoPlay: true,
+    );
+  }
+
+  @override
+  void dispose() {
+    _videoPlayerController?.pause();
+    _videoPlayerController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return VlcPlayer(
+      controller: _videoPlayerController!,
+      aspectRatio: 16 / 9, // Adjust based on your camera's aspect ratio
+      placeholder: const Center(child: CircularProgressIndicator()),
+    );
   }
 }

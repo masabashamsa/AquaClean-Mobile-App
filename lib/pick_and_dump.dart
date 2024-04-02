@@ -48,7 +48,7 @@ class _PickupDumpPageState extends State<PickupDumpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Device Control'),
+        title: const Text('Device Control'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,25 +61,25 @@ class _PickupDumpPageState extends State<PickupDumpPage> {
             _buildRow('Dump Bottles', dumpPercentage, _onDumpSliderChanged),
             // Grab Bottle
             _buildRow('Grab Bottle', grabPercentage, _onGrabSliderChanged),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
                   onPressed: _lift,
-                  child: Text('Lift'),
+                  child: const Text('Lift'),
                 ),
                 ElevatedButton(
                   onPressed: _lower,
-                  child: Text('Lower'),
+                  child: const Text('Lower'),
                 ),
                 ElevatedButton(
                   onPressed: _dump,
-                  child: Text('Dump'),
+                  child: const Text('Dump'),
                 ),
                 ElevatedButton(
                   onPressed: _retract,
-                  child: Text('Retract'),
+                  child: const Text('Retract'),
                 ),
               ],
             ),

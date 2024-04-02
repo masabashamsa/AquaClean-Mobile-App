@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 class VideoWidget extends StatefulWidget {
+  const VideoWidget({super.key});
+
   @override
   _VideoWidgetState createState() => _VideoWidgetState();
 }
@@ -15,7 +17,7 @@ class _VideoWidgetState extends State<VideoWidget> {
     super.initState();
     // Initialize the camera controller
     _controller = CameraController(
-      CameraDescription(
+      const CameraDescription(
         name: '0',
         lensDirection: CameraLensDirection.back,
         sensorOrientation: 0,
@@ -43,7 +45,7 @@ class _VideoWidgetState extends State<VideoWidget> {
           return CameraPreview(_controller);
         } else {
           // Otherwise, display a loading indicator
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );

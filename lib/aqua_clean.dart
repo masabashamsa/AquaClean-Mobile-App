@@ -1,4 +1,5 @@
 import 'package:aqua_clean_app/communication/bottle_detection.dart';
+import 'package:aqua_clean_app/communication/video_view.dart';
 import 'package:aqua_clean_app/video_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
@@ -17,7 +18,7 @@ class _AquaCleanState extends State<AquaClean> {
     return Column(
       children: [
         // Add the video widget
-        const VideoWidget(),
+        const VideoView(),
         // Add the bottle detection widget
         BottleDetection(client: widget.client),
       ],
