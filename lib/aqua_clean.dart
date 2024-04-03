@@ -1,12 +1,11 @@
 import 'package:aqua_clean_app/communication/bottle_detection.dart';
-import 'package:aqua_clean_app/communication/video_view.dart';
-import 'package:aqua_clean_app/video_widget.dart';
+// import 'package:aqua_clean_app/communication/video_view.dart';
+// import 'package:aqua_clean_app/video_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
+// import 'package:flutter/widgets.dart';
 
 class AquaClean extends StatefulWidget {
-  const AquaClean({super.key, required this.client});
-  final MqttServerClient client;
+  const AquaClean({super.key});
 
   @override
   State<AquaClean> createState() => _AquaCleanState();
@@ -15,13 +14,19 @@ class AquaClean extends StatefulWidget {
 class _AquaCleanState extends State<AquaClean> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Add the video widget
-        const VideoView(),
-        // Add the bottle detection widget
-        BottleDetection(client: widget.client),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Aqua Clean'),
+      ),
+      body: const Column(
+        children: [
+          // SizedBox(
+          //     height: 300,
+          //     width: MediaQuery.of(context).size.width * 0.9,
+          //     child: const VideoView()),
+          Expanded(child: BottleDetection()),
+        ],
+      ),
     );
   }
 }

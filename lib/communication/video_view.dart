@@ -10,15 +10,17 @@ class VideoView extends StatefulWidget {
 
 class _VideoViewState extends State<VideoView> {
   VlcPlayerController? _videoPlayerController;
-  final String url = 'rtsp://';
+  final String url = 'https://10.34.0.214:8080';
+
   @override
   void initState() {
     super.initState();
     _videoPlayerController = VlcPlayerController.network(
       url,
       autoInitialize: true,
-      hwAcc: HwAcc.full, // Hardware acceleration for better performance
+      hwAcc: HwAcc.auto, // Hardware acceleration for better performance
       autoPlay: true,
+      options: VlcPlayerOptions(),
     );
   }
 

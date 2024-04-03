@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '469762612706',
     projectId: 'aqua-clean-c5717',
     authDomain: 'aqua-clean-c5717.firebaseapp.com',
+    databaseURL: 'https://aqua-clean-c5717-default-rtdb.firebaseio.com',
     storageBucket: 'aqua-clean-c5717.appspot.com',
     measurementId: 'G-RN0L0340GD',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:469762612706:android:af6428e8271a2051c26dbb',
     messagingSenderId: '469762612706',
     projectId: 'aqua-clean-c5717',
+    databaseURL: 'https://aqua-clean-c5717-default-rtdb.firebaseio.com',
     storageBucket: 'aqua-clean-c5717.appspot.com',
   );
 
@@ -66,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:469762612706:ios:b6dd4de889ac5e5fc26dbb',
     messagingSenderId: '469762612706',
     projectId: 'aqua-clean-c5717',
+    databaseURL: 'https://aqua-clean-c5717-default-rtdb.firebaseio.com',
     storageBucket: 'aqua-clean-c5717.appspot.com',
     iosBundleId: 'com.example.aquaCleanApp',
   );
@@ -75,6 +78,7 @@ class DefaultFirebaseOptions {
     appId: '1:469762612706:ios:4198c86f47f8884cc26dbb',
     messagingSenderId: '469762612706',
     projectId: 'aqua-clean-c5717',
+    databaseURL: 'https://aqua-clean-c5717-default-rtdb.firebaseio.com',
     storageBucket: 'aqua-clean-c5717.appspot.com',
     iosBundleId: 'com.example.aquaCleanApp.RunnerTests',
   );

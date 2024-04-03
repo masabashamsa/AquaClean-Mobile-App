@@ -1,10 +1,10 @@
+import 'package:aqua_clean_app/communication/boolean_visualizer.dart';
 import 'package:flutter/material.dart';
-import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class BottleDetection extends StatefulWidget {
-  const BottleDetection({super.key, required this.client});
-  final MqttServerClient client;
+  const BottleDetection({super.key});
+
   @override
   State<BottleDetection> createState() => _BottleDetectionState();
 }
@@ -12,19 +12,23 @@ class BottleDetection extends StatefulWidget {
 class _BottleDetectionState extends State<BottleDetection> {
   @override
   Widget build(BuildContext context) {
-    // stream bulder for bottle detection obtained from the robot, mqtt server
+    // stream bulder for bottle detection obtained from the firebase real time database
+    final dataStream =
+        FirebaseDatabase.instance.ref().child('bottle_detection').onValue;
     return StreamBuilder(
-      stream: widget.client.updates,
-      builder: (BuildContext context,
-          AsyncSnapshot<List<MqttReceivedMessage<MqttMessage>>> snapshot) {
-        if (snapshot.hasData) {
-          final MqttPublishMessage recMess =
-              snapshot.data![0].payload as MqttPublishMessage;
-          final String message =
-              MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-          return Text(message);
+      stream: dataStream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.hasData && !snapshot.hasError) {
+            DataSnapshot data = snapshot.data!.snapshot.children.last;
+            return BooleanVisualizer(
+                isBottleDetected:
+                    data.value is bool ? data.value as bool : false);
+          } else {
+            return Text("Error: ${snapshot.error}");
+          }
         } else {
-          return const Text('No data');
+          return const CircularProgressIndicator();
         }
       },
     );
