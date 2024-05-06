@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'splash_screen.dart';
 // import 'remote_control_screen.dart'; // Import the new
 import 'pick_and_dump.dart';
+import 'Setting.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -52,14 +53,19 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: const Icon(Icons.home),
               onPressed: () => _onItemTapped(0),
+                color: _selectedIndex == 0 ? Colors.blue : Colors.grey, // Highlight selected icon
             ),
             IconButton(
               icon: const Icon(Icons.menu),
-              onPressed: () => _onItemTapped(1),
+               onPressed: () {
+    Navigator.pushNamed(context, '/pick_and_dump');
+  },
             ),
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () => _onItemTapped(2),
+              onPressed: () {
+                Navigator.pushNamed(context, '/Setting');
+              },
             ),
             // Add more icons and their corresponding pages
           ],
@@ -98,6 +104,7 @@ class MyApp extends StatelessWidget {
         // '/': (context) => const SplashScreen(), // Define route for the splash screen
          '/aqua_clean': (context) => const AquaClean(), // Define route for the remote control screen
         '/pick_and_dump': (context) => PickupDumpPage(), // Define route for the pick and dump screen
+        '/Setting': (context) =>  SettingsPage(),
       },
     );
   }
